@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Spring Batch</title>
+</head>
+<body>
+<h1>Upload file and number of parallel threads</h1>
+	<form action="/upload" method="post" enctype="multipart/form-data">
+		 <input type="file" name="files" multiple>
+     	</br>
+     	</br>
+		<input type="text" name="threads" /> 
+		</br></br>	
+ 		<input type="submit" value="Upload File"/>
+	</form>
+	<div th:if="${message}">
+	    <span th:text="${message}"></span>
+	</div>
+<!-- 	<div><a href="/launchjob">Launch Batch Job</a>
+	</div> -->
+</body>
+
+
+</html>

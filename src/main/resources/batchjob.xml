@@ -1,0 +1,45 @@
+<beans:beans xmlns="http://www.springframework.org/schema/batch"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/batch
+           http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
+
+	<job id="partitionJob" xmlns="http://www.springframework.org/schema/batch">
+	    
+	    <!-- master step, grid-size  -->
+	    <step id="masterStep">
+			<partition step="slave" partitioner="rangePartitioner">
+				<handler grid-size="#{jobParameters['thread']}" task-executor="taskExecutor" />
+			</partition>
+	    </step>
+	    <step id="step1" next="step2">
+			<tasklet ref="tasklet1" />
+		</step>
+		<step id="step2">
+			<tasklet ref="tasklet2" />
+    	</step>
+    </job>
+    
+	
+    <beans:bean id="rangePartitioner" class="com.rajani.rmsbatch.partition.RangePartitioner" />
+    <beans:bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+
+	<!-- Abstract Parent Bean -->
+	<beans:bean id="parentBean" abstract="true">
+		<beans:property name="fileName"
+			value="#{jobParameters['input.file.name']}" />
+	</beans:bean>
+
+	<!-- Tasklet for Ste -->
+	<beans:bean id="tasklet1" scope="step"
+		class="com.rajani.rmsbatch.tasklet.Tasklet1" parent="parentBean" />
+
+	<beans:bean id="tasklet2" scope="job"
+		class="com.rajani.rmsbatch.tasklet.Tasklet2" parent="parentBean" />
+
+	<beans:bean class="org.springframework.batch.core.scope.StepScope" />
+	<beans:bean class="org.springframework.batch.core.scope.JobScope" />
+
+</beans:beans>

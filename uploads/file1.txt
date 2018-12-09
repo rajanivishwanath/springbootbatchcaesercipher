@@ -1,0 +1,6 @@
+Uploading and downloading files are very common tasks for which developers need to write code in their applications.
+In this article, You’ll learn how to upload and download files in a RESTful spring boot web service.
+We’ll first build the REST APIs for uploading and downloading files, and then test those APIs using Postman. 
+We’ll also write front-end code in javascript to upload files.
+To implement a job with some parallel processing, a range of options is provided. 
+At a higher level, there are two modes of parallel processing:
